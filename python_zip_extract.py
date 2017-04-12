@@ -1,39 +1,46 @@
-import sys, string
-import zipfile, os
+import sys
+import string
+import zipfile
+import os
 
 #info
 #check namelist in .zip : zip.namelist()
 #called cmd : subprocess.call(["python", "Checkdds.py", module_name + ".c", init_file + ".m", "excel_output" + .csv])
 
 def unzip(path, zip):
-  isdir = os.path.isdir 
   join = os.path.join 
   norm = os.path.normpath 
 
-  each_cnt = 0
-  
   #need password to extract file
-  zip.setpassword('123456')
+  #convert password string to bype
+  pwd = b"123456"
+  zip.setpassword(pwd)
   
-  #print zip.namelist()
-  #print len(zip.namelist())
+ #extract zip file with password
   for each in zip.namelist():
-    #print each + "   " + str(each_cnt)
-    #zip have folder inside
-    root, name = string.split(each,"/")
-    #print root
-    if len(name) == 0:
+    #have directory in zip file
+    if (each.find("/") >= 0):
+      #root is directory name
+      #name is file content in zip
+      root, name = each.split("/")
+    #have content only
+    else:
+      root = ""
+      name = each
+
+    if len(name) == 0: 
       continue
     else:
-      directory = norm(join(path, root)) # result is .zip name, str type
-      if not os.path.exists(directory): #check folder exist
-        os.makedirs(directory) #build folder
-      b = open(directory + '\\' + name, 'wb') #
+      #result is .zip name, str type
+      directory = norm(join(zip_name, root))
+      #check folder exist
+      if not os.path.exists(directory):
+        #build folder
+        os.makedirs(directory)
+      b = open(directory + "\\" + name, 'wb')
       b.write(zip.read(each))
       b.close()
-    print (name)
-    each_cnt+=1
-  print ("extracting is finish")
+      print ("extracting is finish")
 
 
 if __name__ == '__main__':
