@@ -3,10 +3,6 @@ import string
 import zipfile
 import os
 
-#info
-#check namelist in .zip : zip.namelist()
-#called cmd : subprocess.call(["python", "Checkdds.py", module_name + ".c", init_file + ".m", "excel_output" + .csv])
-
 def unzip(path, zip):
   join = os.path.join 
   norm = os.path.normpath 
@@ -16,7 +12,7 @@ def unzip(path, zip):
   pwd = b"123456"
   zip.setpassword(pwd)
   
- #extract zip file with password
+  #extract zip file with password
   for each in zip.namelist():
     #have directory in zip file
     if (each.find("/") >= 0):
@@ -25,23 +21,28 @@ def unzip(path, zip):
       root, name = each.split("/")
     #have content only
     else:
-      root = ""
+      root = zip_name.replace(".zip","")
       name = each
+      sub_folder = False
 
+    #copy content file to out of zip file
     if len(name) == 0: 
       continue
     else:
       #result is .zip name, str type
       directory = norm(join(zip_name, root))
       #check folder exist
-      if not os.path.exists(directory):
-        #build folder
-        os.makedirs(directory)
-      b = open(directory + "\\" + name, 'wb')
-      b.write(zip.read(each))
-      b.close()
-      print ("extracting is finish")
-
+      if not os.path.exists(root):
+        #create new folder
+        os.makedirs(root)
+      #extract for each content file
+      #if have sub folder in zip file
+      if (sub_folder):
+        zip.extract(each)
+      #or hot have sub folder
+      else:
+        zip.extract(each, root)
+      print ("extracting finish : " + name)
 
 if __name__ == '__main__':
   #sample
