@@ -41,31 +41,14 @@ if __name__ == '__main__':
   #zip = zipfile.ZipFile('hide_pass.zip', 'r') #.zip only
   #unzip("", zip) #extract in same folder
   
-  #user
-  zip_file = input('Put zip file name to extract: ')
-  program_part = os.getcwd() #get current directory path
-  if zip_file == '':
-    zip_file = raw_input('try input zip file name again: ')
-  #zip_part = raw_input('Put zip extract part (if you extract in same folder, not put part): ')
-  #if program_part[1:3] is not ':\\':
-  #  print "please change program part"
-  #if program_part[0] == '\\': #shared drive network
-  #  input('please change program part')
-  #elif program_part[0] is not ('C' and 'D' and 'E'): #only user drive
-  #  input('please change program part')
+  #user put zip file and zip path
+  zip_file = input('Put zip file name with path to extract: ')
+  if len(zip_file) == 0:
+    zip_file = input('Try input zip file name again: ')
   else:
-    zip = zipfile.ZipFile(zip_file, 'r') #.zip only
-    #unzip(zip_path,zip); #if you extract in same folder, you should put "" in path
-    print (program_part)
-    unzip("", zip)
+    #.zip only
+    zip = zipfile.ZipFile(zip_file, 'r')
+    unzip(zip_file,zip);
     zip.close()
-    input('extract zip complete!!!')
-  #if zip_part == '' and program_part[1:3] == ':\\':
-  #  zip_path = ''
-  #elif zip_file[1:3] is not ':\\':
-  #  zip_part = raw_input('Please zip file path is not in shared drive: ')
-  
-  
-  #print zip.namelist() #check namelist in .zip
-  #print len(rezipe('hide.zip'))
+    print ('extract zip complete!!!')
 
